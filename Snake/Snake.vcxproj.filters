@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Generic_DS">
+      <UniqueIdentifier>{7bea7595-3ac2-4691-81cc-93d9eac8734c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CMUgraphicsLib">
+      <UniqueIdentifier>{93af5374-0d06-4802-865c-d2cc4f8e356b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{06f7274e-a3e6-4b46-a54f-69626d65f1e9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Node.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CMUgraphics\CMUgraphics.h">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CMUgraphics\colors.h">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CMUgraphics\error.h">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CMUgraphics\keyqueue.h">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CMUgraphics\mousequeue.h">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CMUgraphics\version.h">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CMUgraphics\windowinput.h">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CMUgraphics\CMUgraphics.cpp">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CMUgraphics\colors.cpp">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CMUgraphics\keyqueue.cpp">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CMUgraphics\mousequeue.cpp">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CMUgraphics\windowinput.cpp">
+      <Filter>CMUgraphicsLib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\CMUgraphics\Manual.txt">
+      <Filter>CMUgraphicsLib</Filter>
+    </Text>
+    <Text Include="..\CMUgraphics\Readme.txt">
+      <Filter>CMUgraphicsLib</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
