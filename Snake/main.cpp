@@ -6,8 +6,6 @@ Please send all bug reports via e-mail to Adham Mahmoud
 
 This file was created on 1st July 2019
 This file was last modified on 12th Mar 2020
-
-To play 
 */
 
 
@@ -37,8 +35,8 @@ To play
 
 
 
-bool quit = false;
 int Speed = 50; //The speed of the game, better be multiple of 5
+bool quit = false;
 
 enum Directions
 {
@@ -93,6 +91,7 @@ public:
 		else if (Key == 'a' || Key == 'A')
 			return LEFT;
 	}
+	
 	window* GetWindow()const
 	{
 		return pWind;
@@ -148,6 +147,7 @@ public:
 		pW->DrawRectangle(0, 0, w, h);
 		return pW;
 	}
+	
 	void CreateStatusBar() const	//create the status bar
 	{
 		pWind->SetPen(WHITE, UI.StatusBarLineWidth);
