@@ -35,7 +35,7 @@ This file was last modified on 12th Mar 2020
 
 
 
-int Speed = 50; //The speed of the game, better be multiple of 5
+int Speed = 50; //The speed of the game, increase to slow down, better be multiple of 5
 bool quit = false;
 
 enum Directions
