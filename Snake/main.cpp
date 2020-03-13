@@ -5,9 +5,7 @@ Please send all bug reports via e-mail to Adham Mahmoud
 (adhmt99@gmail.com).
 
 This file was created on 1st July 2019
-This file was last modified on 12th Mar 2020
-
-To play 
+This file was last modified on 13th Mar 2020
 */
 
 
@@ -38,7 +36,11 @@ To play
 
 
 bool quit = false;
+
+//You can customize these parameters and the parameters in class Output
 int Speed = 50; //The speed of the game, better be multiple of 5
+bool bourderKills = false;
+
 
 enum Directions
 {
@@ -365,13 +367,30 @@ public:
 
 		//If the snake passed the wall it appears from the second one
 		if (h.y < 0)
+		{
 			h.y = UI.dh - 1;
+			alive = false;
+		}
 		else if (h.y > UI.dh - 1)
+		{
 			h.y = 0;
+			alive = false;
+		}
 		else if (h.x < 0)
+		{
 			h.x = UI.dw - 1;
+			alive = false;
+		}
 		else if (h.x > UI.dw - 1)
+		{
 			h.x = 0;
+			alive = false;
+		}
+
+		if (!alive)
+			if (!bourderKills)
+				alive = true;
+
 
 	
 		//Cheaking if the snake killed itself
