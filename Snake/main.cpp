@@ -95,6 +95,7 @@ public:
 		else if (Key == 'a' || Key == 'A')
 			return LEFT;
 	}
+	
 	window* GetWindow()const
 	{
 		return pWind;
@@ -150,6 +151,7 @@ public:
 		pW->DrawRectangle(0, 0, w, h);
 		return pW;
 	}
+	
 	void CreateStatusBar() const	//create the status bar
 	{
 		pWind->SetPen(WHITE, UI.StatusBarLineWidth);
