@@ -95,7 +95,7 @@ public:
 		else if (Key == 'a' || Key == 'A')
 			return LEFT;
 	}
-	
+
 	window* GetWindow()const
 	{
 		return pWind;
@@ -151,7 +151,7 @@ public:
 		pW->DrawRectangle(0, 0, w, h);
 		return pW;
 	}
-	
+
 	void CreateStatusBar() const	//create the status bar
 	{
 		pWind->SetPen(WHITE, UI.StatusBarLineWidth);
@@ -394,7 +394,7 @@ public:
 				alive = true;
 
 
-	
+
 		//Cheaking if the snake killed itself
 		snake.peekFront(tail);
 		Point t = tail->GetCord();
@@ -414,7 +414,7 @@ public:
 			par->ClearPart(pIn);	//Clear tail
 			par->SetCord(h.x, h.y);	//Set its new coords
 			par->DrawPart(pIn);		//Draw it in the head position
-			snake.enqueue(par);		
+			snake.enqueue(par);
 			head = par;
 			return false;
 		}
@@ -422,7 +422,7 @@ public:
 		{
 			BodyPart* np = new BodyPart;	//Adding new part to the snake
 			np->SetCord(h.x, h.y);			//Its coords is the same as the target
-			np->DrawPart(pIn);				
+			np->DrawPart(pIn);
 			snake.enqueue(np);
 			head = np;
 			body[count++] = np;
