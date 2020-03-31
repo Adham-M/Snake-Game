@@ -1,11 +1,6 @@
 ﻿/*
 Created by Adham Mahmoud.
-
-Please send all bug reports via e-mail to Adham Mahmoud
-(adhmt99@gmail.com).
-
 This file was created on 1st July 2019
-This file was last modified on 13th Mar 2020
 */
 
 
