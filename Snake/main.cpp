@@ -1,15 +1,4 @@
-﻿/*
-Created by Adham Mahmoud.
-
-Please send all bug reports via e-mail to Adham Mahmoud
-(adhmt99@gmail.com).
-
-This file was created on 1st July 2019
-This file was last modified on 13th Mar 2020
-*/
-
-
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+﻿#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 #include "..\CMUgraphics\CMUgraphics.h"
 #include "Queue.h"
@@ -72,37 +61,6 @@ struct UI_Info	//User Interface Info.
 
 }UI;	//create a global object UI
 
-class Input		//The application manager should have a pointer to this class
-{
-private:
-	window *pWind;	//Pointer to the Graphics Window
-public:
-	Input(window *pW)		//Consturctor
-	{
-		pWind = pW;
-	}
-
-	int GetDirection() const
-	{
-		char Key;
-		pWind->WaitKeyPress(Key);
-		if (Key == 'w' || Key == 'W')
-			return UP;
-		else if (Key == 'd' || Key == 'D')
-			return RIGHT;
-		else if (Key == 's' || Key == 'S')
-			return DOWN;
-		else if (Key == 'a' || Key == 'A')
-			return LEFT;
-	}
-
-	window* GetWindow()const
-	{
-		return pWind;
-	}
-
-	~Input() {}
-};
 
 class Output   // forward declaration
 {
@@ -111,8 +69,8 @@ private:
 public:
 	Output()
 	{
-		UI.dw = 40; // 
-		UI.dh = 30; // 
+		UI.dw = 40; //Maximum snake parts fitting in the x-axis
+		UI.dh = 30; //Maximum snake parts fitting in the y-axis 
 
 		UI.SnakeSize = 18;
 		UI.TargetRadius = UI.SnakeSize / 2;
@@ -152,17 +110,17 @@ public:
 		return pW;
 	}
 
+	window* GetWindow()const
+	{
+		return pWind;
+	}
+
 	void CreateStatusBar() const	//create the status bar
 	{
 		pWind->SetPen(WHITE, UI.StatusBarLineWidth);
 		pWind->DrawLine(0, UI.height - UI.StatusBarHeight, UI.width, UI.height - UI.StatusBarHeight);
 	}
 
-	Input* CreateInput() const	//Creates a pointer to the Input object	
-	{
-		Input* pIn = new Input(pWind);
-		return pIn;
-	}
 
 	void ClearArea() const
 	{
@@ -216,17 +174,17 @@ public:
 		return cord;
 	}
 
-	void DrawPart(Input* pin)
+	void DrawPart(Output* pout)
 	{
-		window* w = pin->GetWindow();
+		window* w = pout->GetWindow();
 		w->SetPen(BLACK, 1);
 		w->SetBrush(UI.SnakeColor);
 		w->DrawRectangle(cord.x * UI.SnakeSize, cord.y * UI.SnakeSize, cord.x * UI.SnakeSize + UI.SnakeSize, cord.y * UI.SnakeSize + UI.SnakeSize, FILLED);
 	}
 
-	void ClearPart(Input* pin)
+	void ClearPart(Output* pout)
 	{
-		window* w = pin->GetWindow();
+		window* w = pout->GetWindow();
 		w->SetPen(UI.BkGrndColor, 1);
 		w->SetBrush(UI.BkGrndColor);
 		w->DrawRectangle(cord.x * UI.SnakeSize, cord.y * UI.SnakeSize, cord.x * UI.SnakeSize + UI.SnakeSize, cord.y * UI.SnakeSize + UI.SnakeSize, FILLED);
@@ -280,9 +238,9 @@ public:
 		score++;
 	}
 
-	void DrawTarget(Input* pIn) const
+	void DrawTarget(Output* pout) const
 	{
-		window* w = pIn->GetWindow();
+		window* w = pout->GetWindow();
 		w->SetPen(BLACK, 1);
 		w->SetBrush(UI.SnakeColor);
 		//w->DrawRectangle(position.x * UI.SnakeSize, position.y * UI.SnakeSize, position.x * UI.SnakeSize + UI.SnakeSize, position.y * UI.SnakeSize + UI.SnakeSize, FILLED);	//This function draws the target in a square form
@@ -299,14 +257,14 @@ class Snake
 	Queue<BodyPart*> snake;
 	int count = 4;
 	bool alive;
-	Input* pIn;
+	Output* pOut;
 
 public:
-	Snake(Input* pin)
+	Snake(Output* pout)
 	{
 		alive = true;
 		CurrentDirection = RIGHT;
-		pIn = pin;
+		pOut = pout;
 		head = new BodyPart;
 		BodyPart * p1 = new BodyPart;
 		BodyPart * p2 = new BodyPart;
@@ -325,15 +283,15 @@ public:
 		int i = 3;
 		while (i > -1)
 		{
-			body[i]->DrawPart(pIn);
+			body[i]->DrawPart(pOut);
 			snake.enqueue(body[i]);
 			i--;
 		}
 	}
 
-	bool move(Input* pIn, Target tar)
+	bool move(Output* pout, Target tar)
 	{
-		window* w = pIn->GetWindow();
+		window* w = pout->GetWindow();
 		Point h = head->GetCord();
 		int org = CurrentDirection;
 
@@ -411,9 +369,9 @@ public:
 		{
 			BodyPart* par;
 			snake.dequeue(par);
-			par->ClearPart(pIn);	//Clear tail
+			par->ClearPart(pOut);	//Clear tail
 			par->SetCord(h.x, h.y);	//Set its new coords
-			par->DrawPart(pIn);		//Draw it in the head position
+			par->DrawPart(pOut);		//Draw it in the head position
 			snake.enqueue(par);
 			head = par;
 			return false;
@@ -422,7 +380,7 @@ public:
 		{
 			BodyPart* np = new BodyPart;	//Adding new part to the snake
 			np->SetCord(h.x, h.y);			//Its coords is the same as the target
-			np->DrawPart(pIn);
+			np->DrawPart(pOut);
 			snake.enqueue(np);
 			head = np;
 			body[count++] = np;
@@ -435,9 +393,9 @@ public:
 		return alive;
 	}
 
-	void DrawSnake(Input* pIn) const	//Draws the whole snake
+	void DrawSnake(Output* pOut) const	//Draws the whole snake
 	{
-		window* w = pIn->GetWindow();
+		window* w = pOut->GetWindow();
 
 		for (int i = 0; i < count; i++)
 		{
@@ -471,28 +429,28 @@ void PrintScores(Output* pout, int cs, int hs)
 int main()
 {
 	Output* pOut = new Output;
-	Input* pIn = pOut->CreateInput();
+	//Input* pIn = pOut->CreateInput();
 
 	Target* tar = new Target;
-	Snake* snak = new Snake(pIn);
+	Snake* snak = new Snake(pOut);
 
 	int hs = 0;
 	int cs = 0;
 
-	tar->DrawTarget(pIn);
+	tar->DrawTarget(pOut);
 
 	PrintScores(pOut, cs, hs);
 
 
 	while (!quit)
 	{
-		if (snak->move(pIn, *tar))	//If the snake ate the target the "move" function returns true
+		if (snak->move(pOut, *tar))	//If the snake ate the target the "move" function returns true
 		{
 			tar->IncScore();		//Incrementing the score
 			Point p = tar->ChangeTarPos();		//Changing target position
 			while (!snak->PosAvailable(p))		//Cheak if it is a valid position
 				p = tar->ChangeTarPos(rand() % 5, rand() % 5);
-			tar->DrawTarget(pIn);		//Drawing the target
+			tar->DrawTarget(pOut);		//Drawing the target
 			cs = tar->GetScore();
 			hs = cs > hs ? cs : hs;		//Cheak if it is a high score or not
 			PrintScores(pOut, cs, hs);		//printing scores
@@ -504,9 +462,9 @@ int main()
 			delete snak;
 			delete tar;
 			tar = new Target;
-			snak = new Snake(pIn);
+			snak = new Snake(pOut);
 			pOut->ClearArea();
-			tar->DrawTarget(pIn);
+			tar->DrawTarget(pOut);
 			cs = tar->GetScore();
 			PrintScores(pOut, cs, hs);
 		}
