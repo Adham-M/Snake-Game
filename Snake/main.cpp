@@ -1,9 +1,14 @@
 ﻿#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 #include "..\CMUgraphics\CMUgraphics.h"
+#include <iostream>
+#include <fstream>
+#include <direct.h>
+#include <cstring>
 #include "Queue.h"
 #include "string.h"
 #include <time.h>
+using namespace std;
 
 #define KEY_UP 'w'
 #define KEY_DOWN 's'
@@ -426,15 +431,77 @@ void PrintScores(Output* pout, int cs, int hs)
 	pout->PrintMessage("High Score = " + s_hs, UI.width - 160 - (s_hs.length() * 6));
 }
 
+void printTrash(Output* pout, string tt) {
+	pout->PrintMessage(tt);
+}
+
+int loadHighScore(Output* pout)
+{
+	char* pValue;
+	size_t len;
+	errno_t err = _dupenv_s(&pValue, &len, "APPDATA");
+	string path;
+	if (pValue != nullptr) {
+		path = string(pValue) + "\\snakeGame\\data.txt";
+		ifstream myfile(path);
+		if (myfile.is_open()) {
+			int temp;
+			try 
+			{
+				myfile >> temp;
+				return temp;
+			}
+			catch (exception e) 
+			{
+				return 0;
+			}
+		}
+	}
+	return 0;
+}
+
+void saveHighScore(int hs)
+{
+	char* pValue;
+	size_t len;
+	errno_t err = _dupenv_s(&pValue, &len, "APPDATA");
+
+	string path, dirPath;
+	if (pValue != nullptr) {
+		path = string(pValue) + "\\snakeGame\\data.txt";
+		dirPath = string(pValue) + "\\snakeGame";
+
+		ofstream myfile;
+
+		myfile.open(path);
+
+		if (myfile.is_open()) 
+		{
+			myfile << hs << endl;
+		}
+		else {
+			char* char_array;
+			char_array = &dirPath[0];
+			if (_mkdir(char_array)) {
+				myfile.open(path);
+				if (myfile.is_open())
+					myfile << hs << endl;
+			}
+		}
+
+		myfile.close();
+	} 
+}
+
 int main()
 {
 	Output* pOut = new Output;
-	//Input* pIn = pOut->CreateInput();
 
 	Target* tar = new Target;
 	Snake* snak = new Snake(pOut);
 
-	int hs = 0;
+	int hs = loadHighScore(pOut);
+	
 	int cs = 0;
 
 	tar->DrawTarget(pOut);
@@ -452,7 +519,11 @@ int main()
 				p = tar->ChangeTarPos(rand() % 5, rand() % 5);
 			tar->DrawTarget(pOut);		//Drawing the target
 			cs = tar->GetScore();
-			hs = cs > hs ? cs : hs;		//Cheak if it is a high score or not
+			if (cs > hs) //Cheak if it is a high score or not
+			{
+				hs = cs;
+				saveHighScore(hs);
+			}
 			PrintScores(pOut, cs, hs);		//printing scores
 		}
 
@@ -476,4 +547,6 @@ int main()
 		else
 			Sleep(Speed - (cs - Speed * 3) / Speed * 0.3);
 	}
+	
+	return 0;
 }
