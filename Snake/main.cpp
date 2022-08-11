@@ -14,12 +14,14 @@ using namespace std;
 #define KEY_DOWN 's'
 #define KEY_LEFT 'a'
 #define KEY_RIGHT 'd'
+#define KEY_PAUSE 'p'
 #define KEY_QUIT 'q'
 
 #define KEY_UP_c 'W'
 #define KEY_DOWN_c 'S'
 #define KEY_LEFT_c 'A'
 #define KEY_RIGHT_c 'D'
+#define KEY_PAUSE_c 'P'
 #define KEY_QUIT_c 'Q'
 
 #define ARROW_UP '\b'
@@ -30,6 +32,7 @@ using namespace std;
 
 
 bool quit = false;
+bool pause = false;
 
 //You can customize these parameters and the parameters in class Output
 int Speed = 50; //The speed of the game, better be multiple of 5
@@ -306,6 +309,7 @@ public:
 
 		if (w->GetKeyPress(current))
 		{
+			pause = false;
 			if (current == KEY_UP || current == KEY_UP_c || current == ARROW_UP)
 				CurrentDirection = UP;
 			else if (current == KEY_RIGHT || current == KEY_RIGHT_c || current == ARROW_RIGHT)
@@ -315,7 +319,9 @@ public:
 			else if (current == KEY_LEFT || current == KEY_LEFT_c || current == ARROW_LEFT)
 				CurrentDirection = LEFT;
 			else if (current == KEY_QUIT || current == KEY_QUIT_c)
-				quit = true;
+			{ quit = true; return false; }
+			else if (current == KEY_PAUSE || current == KEY_PAUSE_c)
+				pause = true;
 		}
 
 		//If the user entered a reverse direction the snake will keep moving forward
@@ -325,6 +331,7 @@ public:
 		else if (CurrentDirection == LEFT && org == RIGHT)	CurrentDirection = RIGHT;
 
 		//Moving the snake
+		if (pause) return false;
 		if (CurrentDirection == UP)	h.y -= 1;
 		else if (CurrentDirection == RIGHT)	h.x += 1;
 		else if (CurrentDirection == DOWN)	h.y += 1;
