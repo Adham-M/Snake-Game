@@ -297,6 +297,18 @@ public:
 		}
 	}
 
+	void drawSnake(Output* pout, Target tar)
+	{
+		pOut->ClearArea();
+
+		int i = 0;
+		do{
+			body[i]->DrawPart(pOut);
+		} while (body[++i]);
+		
+		tar.DrawTarget(pOut);
+	}
+
 	bool move(Output* pout, Target tar)
 	{
 		window* w = pout->GetWindow();
@@ -309,7 +321,11 @@ public:
 
 		if (w->GetKeyPress(current))
 		{
-			pause = false;
+			if (pause){
+				drawSnake(pout, tar);
+				pause = false;
+			}
+			
 			if (current == KEY_UP || current == KEY_UP_c || current == ARROW_UP)
 				CurrentDirection = UP;
 			else if (current == KEY_RIGHT || current == KEY_RIGHT_c || current == ARROW_RIGHT)
