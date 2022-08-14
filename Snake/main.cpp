@@ -307,6 +307,11 @@ public:
 		} while (body[++i]);
 		
 		tar.DrawTarget(pOut);
+
+
+		// turning the head gray
+		if (pause)
+			drawHead(pout);
 	}
 
 	bool move(Output* pout, Target tar)
@@ -321,10 +326,8 @@ public:
 
 		if (w->GetKeyPress(current))
 		{
-			if (pause){
-				drawSnake(pout, tar);
-				pause = false;
-			}
+			if (pause)
+			{ pause = false; drawSnake(pout, tar); }
 			
 			if (current == KEY_UP || current == KEY_UP_c || current == ARROW_UP)
 				CurrentDirection = UP;
@@ -337,7 +340,7 @@ public:
 			else if (current == KEY_QUIT || current == KEY_QUIT_c)
 			{ quit = true; return false; }
 			else if (current == KEY_PAUSE || current == KEY_PAUSE_c)
-				pause = true;
+			{ pause = true; drawSnake(pout, tar); }
 		}
 
 		//If the user entered a reverse direction the snake will keep moving forward
@@ -421,17 +424,14 @@ public:
 		return alive;
 	}
 
-	void DrawSnake(Output* pOut) const	//Draws the whole snake
+	void drawHead(Output* pOut) const	//Draws the head of the snake
 	{
 		window* w = pOut->GetWindow();
 
-		for (int i = 0; i < count; i++)
-		{
-			Point pos = body[i]->GetCord();
-			w->SetPen(BLACK, 1);
-			w->SetBrush(UI.SnakeColor);
-			w->DrawRectangle(pos.x * UI.SnakeSize, pos.y * UI.SnakeSize, pos.x * UI.SnakeSize + UI.SnakeSize, pos.y * UI.SnakeSize + UI.SnakeSize, FILLED);
-		}
+		Point pos = head->GetCord();
+		w->SetPen(BLACK, 1);
+		w->SetBrush(GRAY);
+		w->DrawRectangle(pos.x * UI.SnakeSize, pos.y * UI.SnakeSize, pos.x * UI.SnakeSize + UI.SnakeSize, pos.y * UI.SnakeSize + UI.SnakeSize, FILLED);
 	}
 
 	bool PosAvailable(Point t)
@@ -531,6 +531,7 @@ int main()
 
 	PrintScores(pOut, cs, hs);
 
+	bool scorePrinted = false;
 
 	while (!quit)
 	{
@@ -561,6 +562,15 @@ int main()
 			tar->DrawTarget(pOut);
 			cs = tar->GetScore();
 			PrintScores(pOut, cs, hs);
+		}
+
+		if (pause && !scorePrinted) {
+			PrintScores(pOut, cs, hs);
+			scorePrinted = true;
+		}
+		else if (!pause && scorePrinted){
+			PrintScores(pOut, cs, hs);
+			scorePrinted = false;
 		}
 
 
